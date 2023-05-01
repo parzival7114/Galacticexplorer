@@ -1,0 +1,69 @@
+
+```python
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Set up the game window
+window_width = 800
+window_height = 600
+window = pygame.display.set_mode((window_width, window_height))
+pygame.display.set_caption("Galactic Explorer")
+
+# Set up the clock
+clock = pygame.time.Clock()
+
+# Set up the player
+player_image = pygame.image.load("spaceship.png")
+player_rect = player_image.get_rect()
+player_rect.centerx = window_width // 2
+player_rect.centery = window_height // 2
+player_speed = 5
+
+# Set up the planets
+planets = []
+for i in range(10):
+    planet_size = random.randint(50, 200)
+    planet_image = pygame.Surface((planet_size, planet_size))
+    planet_image.fill((0, 128, 0))
+    planet_rect = planet_image.get_rect()
+    planet_rect.centerx = random.randint(0, window_width)
+    planet_rect.centery = random.randint(0, window_height)
+    planets.append((planet_image, planet_rect))
+
+# Set up the game loop
+running = True
+while running:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Move the player
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        player_rect.move_ip(-player_speed, 0)
+    if keys[pygame.K_RIGHT]:
+        player_rect.move_ip(player_speed, 0)
+    if keys[pygame.K_UP]:
+        player_rect.move_ip(0, -player_speed)
+    if keys[pygame.K_DOWN]:
+        player_rect.move_ip(0, player_speed)
+
+    # Draw the game world
+    window.fill((0, 0, 0))
+    for planet_image, planet_rect in planets:
+        window.blit(planet_image, planet_rect)
+    window.blit(player_image, player_rect)
+
+    # Update the display
+    pygame.display.update()
+
+    # Set the frame rate
+    clock.tick(60)
+
+# Quit Pygame
+pygame.quit()
+```
